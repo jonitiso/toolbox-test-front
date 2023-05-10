@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import AppHeader from "./components/AppHeader";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import AppTable from "./components/AppTable";
+import {Col, Container, Row} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect} from "react";
+import {fetchItemsThunk} from "./slices/items.slice";
 
 function App() {
+
+  const dispatch = useDispatch()
+  const items = useSelector((state) => state.global.items)
+
+  useEffect(() => {
+    dispatch(fetchItemsThunk());
+  }, [dispatch])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <>
+        <AppHeader/>
+        <Container fluid className={'py-3'}>
+          <Row>
+            <Col className={'px-5'}>
+              <AppTable items={items}/>
+            </Col>
+          </Row>
+        </Container>
+      </>
   );
 }
 
